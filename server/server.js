@@ -3,7 +3,6 @@ const app = express();
 require('dotenv').config()
 const cors = require('cors');
 const bodyParser = require('body-parser')
-const port = 5000;
 const sessionsRoutes = require('./routes/sessions');
 
 // parse application/x-www-form-urlencoded
@@ -23,4 +22,4 @@ app.use("/sessions", sessionsRoutes);
 
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(process.env.PORT || 5000, () => console.log(`Example app listening on port ${port}!`))
