@@ -22,4 +22,4 @@ app.use("/sessions", sessionsRoutes);
 
 
 
-app.listen(process.env.PORT || 5000, () => console.log(`Example app listening on port ${port}!`))
+app.listen(process.env.PORT || 5000, () => console.log('DealBreaker Server is running'))
