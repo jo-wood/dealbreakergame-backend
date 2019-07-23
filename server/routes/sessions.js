@@ -1,6 +1,5 @@
 const express = require('express');
 const router  = express.Router();
-const axios = require('axios');
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 const qs = require('qs');
@@ -13,22 +12,6 @@ router.post("/", (req, res) => {
   console.log("Post route hit");
   console.log(req.body);
   const code = req.body.code;
-
-  // const tokenRequestURL = 'https://api.instagram.com/oauth/access_token';
-  // // Instagram access_token request
-  // axios.post(tokenRequestURL, {
-  //   client_id: '8471be6298f8410b90fd9ddb8b9243de',
-  //   client_secret: 'be35681d362246c7b0897bdf9d010481',
-  //   grant_type: 'authorization_code',
-  //   redirect_uri: 'http://localhost:3000/sessions',
-  //   code: code
-  // })
-  // .then( (response) => {
-  //   console.log(response);
-  // })
-  // .catch(function (error) {
-  //   console.log(error);
-  // });
 
   const params = new URLSearchParams();
   params.append('client_id', process.env.CLIENT_ID);
@@ -65,7 +48,8 @@ router.post("/", (req, res) => {
       profile_picture: json.user.profile_picture
     };
 
-    res.json(JSON.stringify(userObject));   
+    res.json(JSON.stringify(userObject));    
+
   })
   .catch(err => console.error(err));;
 
