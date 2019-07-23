@@ -1,4 +1,5 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
+console.log(process.env);
 
 module.exports = {
 
@@ -17,7 +18,7 @@ module.exports = {
       tableName: 'migrations'
     },
     seeds: {
-      directory: '../db/migrations'
+      directory: '../db/seeds'
     }
   }
 
