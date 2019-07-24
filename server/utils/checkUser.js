@@ -9,7 +9,7 @@ module.exports = (knex) => ({
         
         if (results.length === 0) {
           callback( {returningUser: false} );
-        } else if (results.length >= 1) {
+        } else if (results[0].instagram_id === instgramId) {
           console.log('RESULTS: ', results);
           callback( {returningUser: true} );
         }

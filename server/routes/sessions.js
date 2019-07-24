@@ -44,22 +44,32 @@ module.exports = (knex) => {
     .then(json => { 
       console.log(json);
 
-      // Check user in DB
-      console.log(checkUser);
-      checkUser.authenticateUser(json.user.id, (userAuth) => {
-        console.log(userAuth);
-      })
-
       userObject = {
         user_id: json.user.id,
         username: json.user.username,
         access_token: json.access_token,
         full_name: json.user.full_name,
-        profile_picture: json.user.profile_picture
+        profile_picture: json.user.profile_picture,
+        returning_user: null,
+        logged_in: null
       };
-
-      res.json(JSON.stringify(userObject));    
-
+     
+      // Check user in DB
+      console.log(checkUser);
+      checkUser.authenticateUser(json.user.id, (userAuth) => {
+        console.log(userAuth);
+        
+        if (userAuth.returningUser) {
+          userObject.returning_user = true;
+          userObject.logged_in = true;
+          res.json(JSON.stringify(userObject));   
+        }
+        else {
+          userObject.returning_user = false;
+          userObject.logged_in = false;
+          res.json(JSON.stringify(userObject)); 
+        }
+      })
     })
     .catch(err => console.error(err));;
 
