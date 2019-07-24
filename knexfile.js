@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 module.exports = {
 
@@ -13,11 +13,11 @@ module.exports = {
       ssl: false
     },
     migrations: {
-      directory: '../db/migrations',
+      directory: './db/migrations',
       tableName: 'migrations'
     },
     seeds: {
-      directory: '../db/seeds'
+      directory: './db/seeds'
     }
   }
 
