@@ -8,7 +8,7 @@ module.exports = (knex) => {
 
     knex
       .select()
-      .from('questions')
+      .from('question')
       .then((results) => {
         console.log(results)
         res.json(results);
@@ -24,7 +24,7 @@ module.exports = (knex) => {
       
       knex
         .select()
-        .from('questions')
+        .from('question')
         .then((results) => {
           console.log(results)
           res.json(results);
