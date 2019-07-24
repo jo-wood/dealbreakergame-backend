@@ -31,8 +31,8 @@ app.use(express.static('public'));
 app.get('/hello', (req, res) => res.send('Hello World!'))
 
 
-app.use("/sessions", sessionsRoutes);
-app.use("/questions", questionsRoutes);
+app.use("/sessions", sessionsRoutes(knex));
+app.use("/questions", questionsRoutes(knex));
 
 
 
