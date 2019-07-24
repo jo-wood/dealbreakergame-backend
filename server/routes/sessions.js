@@ -5,6 +5,7 @@ const { URLSearchParams } = require('url');
 const qs = require('qs');
 
 module.exports = (knex) => {
+  const checkUser = require('../utils/checkUser')(knex);
 
   router.get("/", (req, res) => {
     res.send("sessions GET route hit");
@@ -42,6 +43,12 @@ module.exports = (knex) => {
     .then(res => res.json())
     .then(json => { 
       console.log(json);
+
+      // Check user in DB
+      console.log(checkUser);
+      checkUser.authenticateUser(json.user.id, (userAuth) => {
+        console.log(userAuth);
+      })
 
       userObject = {
         user_id: json.user.id,
