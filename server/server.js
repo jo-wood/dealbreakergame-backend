@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 // Routes
 const sessionsRoutes = require('./routes/sessions');
 const questionsRoutes = require('./routes/questions');
+const userProfileRoutes = require('./routes/users');
 
 // ----->
 const knexConfig = require("../knexfile");
@@ -21,7 +22,7 @@ app.use(knexLogger(knex));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
- 
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -33,6 +34,7 @@ app.get('/hello', (req, res) => res.send('Hello World!'))
 
 app.use("/sessions", sessionsRoutes(knex));
 app.use("/questions", questionsRoutes(knex));
+app.use("/profile", userProfileRoutes(knex));
 
 
 
