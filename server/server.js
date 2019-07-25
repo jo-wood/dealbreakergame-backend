@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+var socketServer = require('http').Server(app);
+var io = require('socket.io')(socketServer);
+
 require('dotenv').config()
 const ENV = process.env.ENV || "development";
 const cors = require('cors');
@@ -10,11 +13,25 @@ const sessionsRoutes = require('./routes/sessions');
 const questionsRoutes = require('./routes/questions');
 const userProfileRoutes = require('./routes/users');
 
-// ----->
+// -----> Knex
 const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
+
+// -----> SocketServer
+socketServer.listen(5001);
+//socketServer.use(cors());
+
+io.on('connection', function (socket) {
+  console.log("connection made");
+
+  socket.on('message', (messageData) => {
+    console.log(messageData);
+    io.emit('message', messageData);
+  });
+
+});
 
 app.use(morgan('dev'));
 // Log knex SQL queries to STDOUT as well
