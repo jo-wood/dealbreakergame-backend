@@ -2,7 +2,7 @@ module.exports = (knex) => ({
 
   authenticateUser: (instgramId, callback) => { 
     knex
-      .select('username', 'instagram_id')
+      .select('username', 'instagram_id', 'id')
       .from('users')
       .where('instagram_id', instgramId)
       .then( (results) => {
@@ -11,7 +11,7 @@ module.exports = (knex) => ({
           callback( {returningUser: false} );
         } else if (results[0].instagram_id === instgramId) {
           console.log('RESULTS: ', results);
-          callback( {returningUser: true} );
+          callback( {returningUser: true, userId: results[0].id} );
         }
         
     });

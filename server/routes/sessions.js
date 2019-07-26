@@ -46,7 +46,8 @@ module.exports = (knex) => {
       console.log(json);
 
       userObject = {
-        user_id: json.user.id,
+        user_id: null,
+        instagram_id: json.user.id,
         username: json.user.username,
         access_token: json.access_token,
         full_name: json.user.full_name,
@@ -66,6 +67,7 @@ module.exports = (knex) => {
           console.log(userAuth);
           
           if (userAuth.returningUser) {
+            userObject.user_id = userAuth.userId;
             userObject.returning_user = true;
             userObject.logged_in = true;
             res.json(JSON.stringify(userObject));   
