@@ -58,6 +58,7 @@ module.exports = (knex) => {
       .where('user_a', userId)
       .orWhere('user_b', userId)
       .innerJoin('match_detail', 'match.match_detail_id', 'match_detail.id')
+      .innerJoin('question', 'match_detail.q_id', 'question.id')
       .then((results) => {
         console.log(results)
         res.json(results);
