@@ -6,7 +6,6 @@ const qs = require('qs');
 
 module.exports = (knex) => {
   const checkUser = require('../utils/checkUser')(knex);
-  const instagramPublicApi = require('../utils/instragramPublicApi');
 
   router.get("/", (req, res) => {
     res.send("sessions GET route hit");
@@ -51,33 +50,26 @@ module.exports = (knex) => {
         access_token: json.access_token,
         full_name: json.user.full_name,
         profile_picture: json.user.profile_picture,
-        profile_picture_hd: null,
         returning_user: null,
         logged_in: null
       };
      
-      // Get Instagram HD image
-      instagramPublicApi.getHighDefImage(json.user.id, (result) => {
-        console.log('HD_URL_STRING: ', result.hd_url);
-        userObject.profile_picture_hd = result.hd_url;
-      
-        // Check user in DB
-        checkUser.authenticateUser(json.user.id, (userAuth) => {
-          console.log(userAuth);
-          
-          if (userAuth.returningUser) {
-            userObject.returning_user = true;
-            userObject.logged_in = true;
-            res.json(JSON.stringify(userObject));   
-          }
-          else {
-            userObject.returning_user = false;
-            userObject.logged_in = false;
-            res.json(JSON.stringify(userObject)); 
-          }
-        })  
+      // Check user in DB
+      console.log(checkUser);
+      checkUser.authenticateUser(json.user.id, (userAuth) => {
+        console.log(userAuth);
+        
+        if (userAuth.returningUser) {
+          userObject.returning_user = true;
+          userObject.logged_in = true;
+          res.json(JSON.stringify(userObject));   
+        }
+        else {
+          userObject.returning_user = false;
+          userObject.logged_in = false;
+          res.json(JSON.stringify(userObject)); 
+        }
       })
-      
     })
     .catch(err => console.error(err));;
 
