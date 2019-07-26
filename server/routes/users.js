@@ -58,8 +58,10 @@ module.exports = (knex) => {
 
     knex
       .select()
-      .from('users')
-      .where('id', req.params.id)
+      .from('match')
+      .where('user_a', userId)
+      .orWhere('user_b', userId)
+      .innerJoin('match_detail', 'match.match_detail_id', 'match_detail.id')
       .then((results) => {
         console.log(results)
         res.json(results);
