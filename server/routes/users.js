@@ -38,15 +38,12 @@ module.exports = (knex) => {
     const userId = req.params.id;
 
     knex.raw( `select *
-      from  (select user_a x from match where user_b = ${userId} UNION select user_b x from match where user_a = ${userId}) as u 
+      from  (select user_a x, match_percent, match_date from match where user_b = ${userId} UNION select user_b x, match_percent, match_date from match where user_a = ${userId}) as u 
       inner join users on u.x = users.id;`)  
       .then((results) => {
         console.log(results)
         res.json(results.rows);
       });
-    
-      //   knex('users')
-      //    .select(knex.ref('Id').as('UserId'))
      
  });
 
@@ -55,11 +52,13 @@ module.exports = (knex) => {
     console.log("profile GET with ID and Match route hit");
     const userId = req.params.id;
 
-
     knex
       .select()
-      .from('users')
-      .where('id', req.params.id)
+      .from('match')
+      .where('user_a', userId)
+      .orWhere('user_b', userId)
+      .innerJoin('match_detail', 'match.match_detail_id', 'match_detail.id')
+      .innerJoin('question', 'match_detail.q_id', 'question.id')
       .then((results) => {
         console.log(results)
         res.json(results);
