@@ -38,15 +38,12 @@ module.exports = (knex) => {
     const userId = req.params.id;
 
     knex.raw( `select *
-      from  (select user_a x from match where user_b = ${userId} UNION select user_b x from match where user_a = ${userId}) as u 
+      from  (select user_a x, match_percent, match_date from match where user_b = ${userId} UNION select user_b x, match_percent, match_date from match where user_a = ${userId}) as u 
       inner join users on u.x = users.id;`)  
       .then((results) => {
         console.log(results)
         res.json(results.rows);
       });
-    
-      //   knex('users')
-      //    .select(knex.ref('Id').as('UserId'))
      
  });
 
@@ -54,7 +51,6 @@ module.exports = (knex) => {
   router.get("/:id/matches/details", (req, res) => {
     console.log("profile GET with ID and Match route hit");
     const userId = req.params.id;
-
 
     knex
       .select()
