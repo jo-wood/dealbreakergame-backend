@@ -53,7 +53,17 @@ module.exports = (knex) => {
 
   router.get("/:id/matches/details", (req, res) => {
     console.log("profile GET with ID and Match route hit");
+    const userId = req.params.id;
 
+
+    knex
+      .select()
+      .from('users')
+      .where('id', req.params.id)
+      .then((results) => {
+        console.log(results)
+        res.json(results);
+      });
     
   });
 
