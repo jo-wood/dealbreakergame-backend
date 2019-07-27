@@ -4,6 +4,9 @@ var socketServer = require('http').Server(app);
 var io = require('socket.io')(socketServer);
 
 // Game Data:
+let currentQuestion = 0;
+let gameStarted = false;
+let gameTimer = 15;
 const totalQuestions = 0;
 const totalUsers = 0;
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
@@ -38,12 +41,21 @@ io.on('connection', function (socket) {
     io.emit('message', messageData);
   });
 
+  
   // set inital game parameters
   socket.on('gameStarted', (gameData) => {
     const { questionCount, userCount } = gameData;
     totalQuestions = questionCount;
     totalUsers = userCount;
   });
+
+  let countdown = 100;
+  function emitTimer() {
+    io.emit('timer', {count: countdown});
+    countdown--;
+  }
+
+  setInterval( emitTimer, 1000);  // slow down socket connection
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
