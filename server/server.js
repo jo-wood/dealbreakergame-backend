@@ -49,10 +49,21 @@ io.on('connection', function (socket) {
     totalUsers = userCount;
   });
 
-  let countdown = 100;
+  //set game room timer and when timer hits zero send new question and reset timer (15)
+  let gameRoomTimer = 15;
   function emitTimer() {
-    io.emit('timer', {count: countdown});
-    countdown--;
+    if (gameRoomTimer < 0){
+      io.emit('NextGameRoomQuestion', {question: getQuestion()})
+      gameRoomTimer = 15
+    }
+    io.emit('gameRoomTimer', {gameRoomTimer: gameRoomTimer});
+    gameRoomTimer--;
+    console.log(gameRoomTimer);
+  }
+  
+  function getQuestion() {
+    let question = {}
+    return question;
   }
 
   setInterval( emitTimer, 1000);  // slow down socket connection
