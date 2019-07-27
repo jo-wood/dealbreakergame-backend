@@ -29,6 +29,9 @@ const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
+
+let gameRoomTimer = 15;  // declared outside of io
+let questionIndex = 1;  // // declared outside of io
 // -----> SocketServer
 socketServer.listen(5001);
 //socketServer.use(cors());
@@ -51,8 +54,8 @@ io.on('connection', function (socket) {
   });
 
   //set game room timer and when timer hits zero send new question and reset timer (15)
-  let gameRoomTimer = 15;
-  let questionIndex = 1;
+  // let gameRoomTimer = 15; // inside io connection
+  // let questionIndex = 1; // inside io connection
   function emitTimer() {
     if (gameRoomTimer < 0){
       getQuestion(questionIndex);
@@ -65,16 +68,21 @@ io.on('connection', function (socket) {
   }
   
   function getQuestion(questionCount) {
-    fetch(`http://localhost:5000/questions/${questionCount}`)
-      .then(res => res.json())
-      .then(json => {
-        const questionObject = json[0];
-        console.log(questionObject);
-        io.emit('NextGameRoomQuestion', {question: questionObject});
-      });
+    if (questionCount > 10) {
+      io.emit('gameStatus', {game_over: true});
+    } else {
+      fetch(`http://localhost:5000/questions/${questionCount}`)
+        .then(res => res.json())
+        .then(json => {
+          const questionObject = json[0];
+          console.log(questionObject);
+          io.emit('NextGameRoomQuestion', {question: questionObject});
+        });
+      }
+
   }
 
-  setInterval( emitTimer, 1000);  // slow down socket connection
+  setInterval( emitTimer, 1500);  // slow down socket connection
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
