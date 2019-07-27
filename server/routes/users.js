@@ -17,6 +17,38 @@ module.exports = (knex) => {
 
   });
 
+  // Enter new user in DB
+  router.post("/new", (req, res) => {
+    const userObject = req.body.user;
+    
+    // Compile birthdate
+    const birthdate = `${userObject.ageYear}-${userObject.ageMonth}-${userObject.ageDay}`
+
+    // Insert new user
+    knex
+      .insert({
+        instagram_id: userObject.instagram_id,
+        username: userObject.username,
+        full_name: userObject.full_name,
+        access_token: userObject.access_token,
+        birthdate: birthdate,
+        identifyAs: userObject.identifyAs,
+        interestedIn: userObject.interestedIn,
+        age_perference_min: userObject.ageMin,
+        age_perference_max: userObject.ageMax,
+        image_url: userObject.profile_picture,
+        image_url_hd: userObject.profile_picture_hd      
+      })
+      .into('users')
+      .then((result) => {
+        res.json({"test":"done"});
+      })
+      .catch((err) => {
+        res.status(500).send('Sorry, something went wrong. Please try again.')
+      });
+    
+  })
+
   // Return user info matching id
   router.get("/:id", (req, res) => {
     console.log("profile GET with ID param hit");
