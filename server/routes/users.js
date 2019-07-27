@@ -19,7 +19,9 @@ module.exports = (knex) => {
 
   // Enter new user in DB
   router.post("/new", (req, res) => {
-    const userObject = req.body.user;
+    console.log(req.body);
+    const userObject = req.body;
+    console.log('userObject: ', userObject);
     
     // Compile birthdate
     const birthdate = `${userObject.ageYear}-${userObject.ageMonth}-${userObject.ageDay}`
@@ -40,8 +42,14 @@ module.exports = (knex) => {
         image_url_hd: userObject.profile_picture_hd      
       })
       .into('users')
-      .then((result) => {
-        res.json({"test":"done"});
+      .returning('id')
+      .then(([id]) => {
+        console.log(id);
+        const returnObject = {
+          status: 'completed',
+          id: id
+        }
+        res.json(returnObject);
       })
       .catch((err) => {
         res.status(500).send('Sorry, something went wrong. Please try again.')
