@@ -39,21 +39,28 @@ module.exports = (knex) => {
         age_perference_min: userObject.ageMin,
         age_perference_max: userObject.ageMax,
         image_url: userObject.profile_picture,
-        image_url_hd: userObject.profile_picture_hd      
+        image_url_hd: userObject.profile_picture_hd,     
       })
       .into('users')
       .returning('id')
-      .then(([id]) => {
-        console.log(id);
-        const returnObject = {
-          status: 'completed',
-          id: id
-        }
-        res.json(returnObject);
+      .then((result) => {
+        res.json({"test":"test"});
       })
       .catch((err) => {
         res.status(500).send('Sorry, something went wrong. Please try again.')
-      });
+      })
+
+      // // .then(([id]) => {
+      // //   console.log(id);
+      // //   // const returnObject = {
+      // //   //   status: 'completed',
+      // //   //   id: id
+      // //   // }
+      // //   // res.json(JSON.parse(returnObject));
+      // // })
+      // .catch((err) => {
+      //   res.status(500).send('Sorry, something went wrong. Please try again.')
+      // });
     
   })
 

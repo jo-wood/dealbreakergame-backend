@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
 const userData = {
-  user: {
-    instagram_id: 123,
+  
+    instagram_id: 123456,
     username: 'testuser',
     full_name: 'test-user',
     access_token: 'atatatatat',
@@ -15,7 +15,7 @@ const userData = {
     interestedIn: 'female',
     ageMin: 25,
     ageMax: 30
-  }
+  
 }
 
 
@@ -24,5 +24,6 @@ fetch('http://localhost:5000/profile/new', {
         body: JSON.stringify(userData),
         headers: { 'Content-Type': 'application/json' },
     })
-    .then(res => console.log(res))
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(error => console.log(error));
