@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 var socketServer = require('http').Server(app);
 var io = require('socket.io')(socketServer);
+const fetch = require('node-fetch');
 
 // Game Data:
 let currentQuestion = 0;
@@ -51,19 +52,26 @@ io.on('connection', function (socket) {
 
   //set game room timer and when timer hits zero send new question and reset timer (15)
   let gameRoomTimer = 15;
+  let questionIndex = 1;
   function emitTimer() {
     if (gameRoomTimer < 0){
-      io.emit('NextGameRoomQuestion', {question: getQuestion()})
+      getQuestion(questionIndex);
       gameRoomTimer = 15
+      questionIndex++;
     }
     io.emit('gameRoomTimer', {gameRoomTimer: gameRoomTimer});
     gameRoomTimer--;
     console.log(gameRoomTimer);
   }
   
-  function getQuestion() {
-    let question = {}
-    return question;
+  function getQuestion(questionCount) {
+    fetch(`http://localhost:5000/questions/${questionCount}`)
+      .then(res => res.json())
+      .then(json => {
+        const questionObject = json[0];
+        console.log(questionObject);
+        io.emit('NextGameRoomQuestion', {question: questionObject});
+      });
   }
 
   setInterval( emitTimer, 1000);  // slow down socket connection

@@ -18,13 +18,12 @@ module.exports = (knex) => {
 
     router.get("/:id", (req, res) => {
       console.log("questions GET route hit");
-  
-
-      // question.fetchSingleQueston(req.params.id)
+      const questionId = req.params.id;
       
       knex
         .select()
         .from('question')
+        .where('id', questionId)
         .then((results) => {
           console.log(results)
           res.json(results);
