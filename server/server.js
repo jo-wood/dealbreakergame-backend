@@ -3,6 +3,12 @@ const app = express();
 var socketServer = require('http').Server(app);
 var io = require('socket.io')(socketServer);
 
+// Game Data:
+const totalQuestions = 0;
+const totalUsers = 0;
+const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
+const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
+
 require('dotenv').config()
 const ENV = process.env.ENV || "development";
 const cors = require('cors');
@@ -26,9 +32,29 @@ socketServer.listen(5001);
 io.on('connection', function (socket) {
   console.log("connection made");
 
+  // chatroom messages:
   socket.on('message', (messageData) => {
     console.log(messageData);
     io.emit('message', messageData);
+  });
+
+  // set inital game parameters
+  socket.on('gameStarted', (gameData) => {
+    const { questionCount, userCount } = gameData;
+    totalQuestions = questionCount;
+    totalUsers = userCount;
+  });
+
+  // one user answer incoming:
+  socket.on('userAnswer', (userAnswerData) => {
+    let questionMatch = userAnsPerQues(userAnswerData);
+    io.emit('perQMatches', questionMatch);
+  });
+
+  // game over
+  socket.on('gameOver', (userMatches) => {
+    let rankedMatches = totalGameAnswers(userMatches, totalQuestions);
+  io.emit('perQMatches', rankedMatches);
   });
 
 });
@@ -46,13 +72,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.static('public'));
-app.get('/hello', (req, res) => res.send('Hello World!'))
-
 
 app.use("/sessions", sessionsRoutes(knex));
 app.use("/questions", questionsRoutes(knex));
 app.use("/profile", userProfileRoutes(knex));
-
-
 
 app.listen(process.env.PORT || 5000, () => console.log('DealBreaker Server is running'))
