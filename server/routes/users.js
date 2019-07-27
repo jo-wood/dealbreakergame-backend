@@ -43,24 +43,16 @@ module.exports = (knex) => {
       })
       .into('users')
       .returning('id')
-      .then((result) => {
-        res.json({"test":"test"});
+      .then(([id]) => {
+        const returnObject = {
+          status: 'completed',
+          id: id
+        }
+        res.json(JSON.stringify(returnObject));
       })
       .catch((err) => {
         res.status(500).send('Sorry, something went wrong. Please try again.')
       })
-
-      // // .then(([id]) => {
-      // //   console.log(id);
-      // //   // const returnObject = {
-      // //   //   status: 'completed',
-      // //   //   id: id
-      // //   // }
-      // //   // res.json(JSON.parse(returnObject));
-      // // })
-      // .catch((err) => {
-      //   res.status(500).send('Sorry, something went wrong. Please try again.')
-      // });
     
   })
 
