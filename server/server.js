@@ -44,7 +44,6 @@ io.on('connection', function (socket) {
     console.log(messageData);
     io.emit('message', messageData);
   });
-
   
   // set inital game parameters
   socket.on('gameStarted', (gameData) => {
