@@ -40,7 +40,6 @@ const knexLogger = require('knex-logger');
 // -----> UserPoole
 const userPool = {};
 
-// Game Status Check Loop
 
 
 // -----> SocketServer
@@ -50,6 +49,11 @@ socketServer.listen(5001);
 io.on('connection', function (socket) {
   console.log("connection made");
 
+  // Game Status Check Loop
+  // do {
+  //   preGame();
+  // } while (game_started);
+
   //send next game start time
   io.emit('setNextGameTime', nextGameTime );
 
@@ -58,6 +62,7 @@ io.on('connection', function (socket) {
     if (data === 'true') {
       console.log('*** Trigger Start Executed ***');
       preGame();
+      game_started = true;
     }
   });
 
@@ -80,6 +85,7 @@ io.on('connection', function (socket) {
   function preGame() {
     // Send Message Redirect from WaitingRoom to GameRoom
     io.emit('gameStarted', {start: true} );
+    game_started = true;
       setTimeout(() => {
         startGame();
       }, 4000);
@@ -99,7 +105,11 @@ io.on('connection', function (socket) {
       // need to make the userPool incluse specifc user Data (pics)
       io.emit('userPool', userPool);
       io.emit('initializeGame', questionData);
-      setInterval( emitTimer, 1000);
+      setInterval( () => {
+        if (game_started) {
+          emitTimer();
+        }
+3      }, 1000);
     });
   }
 
@@ -119,9 +129,10 @@ io.on('connection', function (socket) {
   
   function getQuestion(questionIndex) {
     if (questionIndex > 10) {
-      game_over = true;
+      game_started = false;
       io.emit('gameOver', {game_started: false});
-      //questionIndex = 1;
+      questionIndex = 1;
+      console.log(game_started);
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
