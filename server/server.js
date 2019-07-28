@@ -56,8 +56,8 @@ io.on('connection', function (socket) {
   socket.on('triggerStart', (data) => {
     console.log(data);
     if (data === 'true') {
-      console.log('start happened');
-      startGame();
+      console.log('*** Trigger Start Executed ***');
+      preGame();
     }
   });
 
@@ -76,6 +76,14 @@ io.on('connection', function (socket) {
     console.log(messageData);
     io.emit('message', messageData);
   });
+
+  function preGame() {
+    // Send Message Redirect from WaitingRoom to GameRoom
+    io.emit('gameStarted', {start: true} );
+      setTimeout(() => {
+        startGame();
+      }, 4000);
+  }
   
   // set inital game parameters if the game has been started
   function startGame() {
@@ -89,6 +97,7 @@ io.on('connection', function (socket) {
       const questionData = json[0];
       emitTimer();
       // need to make the userPool incluse specifc user Data (pics)
+      io.emit('userPool', userPool);
       io.emit('initializeGame', questionData);
       setInterval( emitTimer, 1000);
     });
@@ -112,6 +121,7 @@ io.on('connection', function (socket) {
     if (questionIndex > 10) {
       game_over = true;
       io.emit('gameOver', {game_started: false});
+      //questionIndex = 1;
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
