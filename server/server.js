@@ -121,6 +121,7 @@ io.on('connection', function (socket) {
     if (questionIndex > 10) {
       game_over = true;
       io.emit('gameOver', {game_started: false});
+      //questionIndex = 1;
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
