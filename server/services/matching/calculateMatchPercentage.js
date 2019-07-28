@@ -29,4 +29,6 @@ function calculateSumMatches(game) {
 }
 
 // test dummyAnswers
-console.log(calculateSumMatches(gameAnswers))
+// console.log(calculateSumMatches(gameAnswers))
+// let questionAnswers = gameAnswers.q_Id_One;
+// console.log(calculatePerQuestionMatch('optionA', questionAnswers))

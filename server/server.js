@@ -5,11 +5,9 @@ var io = require('socket.io')(socketServer);
 const fetch = require('node-fetch');
 
 // Game Data:
-let currentQuestion = 0;
-let gameStarted = false;
-let gameTimer = 15;
-const totalQuestions = 0;
-const totalUsers = 0;
+// ---> update to say how many are in game once gameStarted is true
+const totalUsers = 10;
+let game_over = false;
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 
@@ -31,7 +29,7 @@ const knexLogger = require('knex-logger');
 
 
 let gameRoomTimer = 15;  // declared outside of io
-let questionIndex = 1;  // // declared outside of io
+let questionIndex = 1;  // use 2 since inital game start sends first Q
 // -----> SocketServer
 socketServer.listen(5001);
 //socketServer.use(cors());
@@ -48,9 +46,15 @@ io.on('connection', function (socket) {
   
   // set inital game parameters
   socket.on('gameStarted', (gameData) => {
-    const { questionCount, userCount } = gameData;
-    totalQuestions = questionCount;
-    totalUsers = userCount;
+// ---> update to say how many are in game once gameStarted is true
+      fetch(`http://localhost:5000/questions/${questionIndex}`)
+        .then(res => res.json())
+        .then(json => {
+          const questionData = json[0];
+          emitTimer();
+          // need to make the userPool incluse specifc user Data (pics)
+          io.emit('initializeGame', questionData);
+    });
   });
 
   //set game room timer and when timer hits zero send new question and reset timer (15)
@@ -62,31 +66,36 @@ io.on('connection', function (socket) {
       gameRoomTimer = 15
       questionIndex++;
     }
-    io.emit('gameRoomTimer', {gameRoomTimer: gameRoomTimer});
+    io.emit('gameRoomTimer', gameRoomTimer);
     gameRoomTimer--;
-    console.log(gameRoomTimer);
   }
   
-  function getQuestion(questionCount) {
-    if (questionCount > 10) {
+  function getQuestion(questionIndex) {
+    if (questionIndex > 10) {
+      game_over = true;
       io.emit('gameStatus', {game_over: true});
     } else {
-      fetch(`http://localhost:5000/questions/${questionCount}`)
+      fetch(`http://localhost:5000/questions/${questionIndex}`)
         .then(res => res.json())
         .then(json => {
-          const questionObject = json[0];
-          console.log(questionObject);
-          io.emit('NextGameRoomQuestion', {question: questionObject});
+          const questionData = json[0];
+          io.emit('NextGameRoomQuestion', questionData);
         });
       }
 
   }
 
-  setInterval( emitTimer, 1500);  // slow down socket connection
+  setInterval( emitTimer, 2000);  // slow down socket connection
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
-    let questionMatch = userAnsPerQues(userAnswerData);
+    console.log(userAnswerData);
+    allAnswerPerQuestion = {};
+    if (totalUsers === 10) {
+      questionMatch = userAnsPerQues(userAnswerData);
+      // insert user_id and answer
+    }
+
     io.emit('perQMatches', questionMatch);
   });
 
