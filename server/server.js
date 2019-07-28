@@ -48,7 +48,10 @@ io.on('connection', function (socket) {
   //send next game start time
   io.emit('setNextGameTime', nextGameTime );
 
-
+  // New connect user
+  socket.on('newUser', (userInfo) => {
+    
+  });
 
   //check if the time is render game
   if (Date.now() > nextGameTime) {
