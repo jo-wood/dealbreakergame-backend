@@ -6,7 +6,8 @@ const fetch = require('node-fetch');
 
 // Game Data:
 // ---> update to say how many are in game once gameStarted is true
-let nextGameTime =  new Date(2019, 6, 28, 20, 0, 0)
+let admin = false;
+let nextGameTime = admin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
 const totalUsers = 10;
 let game_started = true;
 const userResponses = {};
@@ -47,6 +48,13 @@ io.on('connection', function (socket) {
   //send next game start time
   io.emit('setNextGameTime', nextGameTime );
 
+
+
+  //check if the time is render game
+  if (Date.now() > nextGameTime) {
+    game_started = true;
+  }
+
   // chatroom messages:
   socket.on('message', (messageData) => {
     console.log(messageData);
@@ -68,6 +76,7 @@ io.on('connection', function (socket) {
     });
   }
 
+
   //set game room timer and when timer hits zero send new question and reset timer (15)
   // let gameRoomTimer = 15; // inside io connection
   // let questionIndex = 1; // inside io connection
@@ -85,6 +94,7 @@ io.on('connection', function (socket) {
     if (questionIndex > 10) {
       game_over = true;
       io.emit('gameStatus', {game_over: true});
+      //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
         .then(res => res.json())
