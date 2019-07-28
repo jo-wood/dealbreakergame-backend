@@ -9,7 +9,7 @@ const fetch = require('node-fetch');
 let demoAdmin = false;
 let nextGameTime = !demoAdmin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
 const totalUsers = 10;
-let game_started = true;
+let game_started = false;
 const userResponses = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
@@ -37,6 +37,11 @@ const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
+// -----> UserPoole
+const userPool = {};
+
+// Game Status Check Loop
+
 
 // -----> SocketServer
 socketServer.listen(5001);
@@ -48,7 +53,18 @@ io.on('connection', function (socket) {
   //send next game start time
   io.emit('setNextGameTime', nextGameTime );
 
+  socket.on('triggerStart', (data) => {
+    console.log(data);
+    if (data === 'true') {
+      console.log('start happened');
+      startGame();
+    }
+  });
 
+  // New connected user --> store in local object
+  socket.on('newUser', (userInfo) => {
+    userPool[userInfo.user_id] = userInfo.profile_picture;
+  });
 
   //check if the time is render game
   if (Date.now() > nextGameTime) {
@@ -62,17 +78,19 @@ io.on('connection', function (socket) {
   });
   
   // set inital game parameters if the game has been started
-  if (game_started) {
+  function startGame() {
     //create first question slot for responses 
     questionResponses[questionIndex] = {};
     questionResponses
     fetch(`http://localhost:5000/questions/${questionIndex}`)
     .then(res => res.json())
     .then(json => {
+      questionIndex++;
       const questionData = json[0];
       emitTimer();
       // need to make the userPool incluse specifc user Data (pics)
       io.emit('initializeGame', questionData);
+      setInterval( emitTimer, 1000);
     });
   }
 
@@ -93,7 +111,7 @@ io.on('connection', function (socket) {
   function getQuestion(questionIndex) {
     if (questionIndex > 10) {
       game_over = true;
-      io.emit('gameStatus', {game_over: true});
+      io.emit('gameOver', {game_started: false});
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
@@ -113,7 +131,7 @@ io.on('connection', function (socket) {
     totalResponsesToCurrentQuestion = Object.keys(questionResponses[questionIndex]).length;
   }
 
-  setInterval( emitTimer, 2000);  // slow down socket connection
+  //setInterval( emitTimer, 2000);  // slow down socket connection
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
