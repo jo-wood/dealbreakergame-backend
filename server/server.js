@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 // Game Data:
 // ---> update to say how many are in game once gameStarted is true
 const totalUsers = 10;
-let gameStarted = false;
+let game_over = false;
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 
@@ -72,6 +72,7 @@ io.on('connection', function (socket) {
   
   function getQuestion(questionIndex) {
     if (questionIndex > 10) {
+      game_over = true;
       io.emit('gameStatus', {game_over: true});
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
@@ -88,7 +89,13 @@ io.on('connection', function (socket) {
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
-    let questionMatch = userAnsPerQues(userAnswerData);
+    console.log(userAnswerData);
+    allAnswerPerQuestion = {};
+    if (totalUsers === 10) {
+      questionMatch = userAnsPerQues(userAnswerData);
+      // insert user_id and answer
+    }
+
     io.emit('perQMatches', questionMatch);
   });
 
