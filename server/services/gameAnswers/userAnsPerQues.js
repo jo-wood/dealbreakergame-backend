@@ -14,6 +14,7 @@ function calculateSumMatches(answers) {
 
 module.exports = {
   userAnsPerQues: (qAndData) => {
+    console.log("ANSWERS",qAndData)
     // need q_id for storing in database (answers here is q_id)
     const answers = qAndData.questionId;
     let questionMatches = calculateSumMatches(answers);
