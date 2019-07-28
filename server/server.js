@@ -6,8 +6,8 @@ const fetch = require('node-fetch');
 
 // Game Data:
 // ---> update to say how many are in game once gameStarted is true
-let admin = false;
-let nextGameTime = admin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
+let demoAdmin = false;
+let nextGameTime = !demoAdmin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
 const totalUsers = 10;
 let game_started = true;
 const userResponses = {};
