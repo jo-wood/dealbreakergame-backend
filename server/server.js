@@ -6,8 +6,10 @@ const fetch = require('node-fetch');
 
 // Game Data:
 // ---> update to say how many are in game once gameStarted is true
+let nextGameTime =  new Date(2019, 6, 28, 20, 0, 0)
 const totalUsers = 10;
 let game_over = false;
+const userResponses = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 
@@ -37,14 +39,16 @@ socketServer.listen(5001);
 io.on('connection', function (socket) {
   console.log("connection made");
 
+  //send next game start time
+  io.emit('setNextGameTime', nextGameTime );
+
   // chatroom messages:
   socket.on('message', (messageData) => {
     console.log(messageData);
     io.emit('message', messageData);
   });
-
   
-  // set inital game parameters
+  // set inital game parameters     //DONT WE TELL THEM THE GAME HAS STARTED ???
   socket.on('gameStarted', (gameData) => {
 // ---> update to say how many are in game once gameStarted is true
       fetch(`http://localhost:5000/questions/${questionIndex}`)
@@ -85,11 +89,16 @@ io.on('connection', function (socket) {
 
   }
 
+  function addUserResponse(userResponse) {
+    userResponses.add
+  }
+
   setInterval( emitTimer, 2000);  // slow down socket connection
 
   // one user answer incoming:
   socket.on('userAnswer', (userAnswerData) => {
     console.log(userAnswerData);
+    addUserResponse(userAnswerData);
     allAnswerPerQuestion = {};
     if (totalUsers === 10) {
       questionMatch = userAnsPerQues(userAnswerData);
