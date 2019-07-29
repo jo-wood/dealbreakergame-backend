@@ -10,7 +10,7 @@ let demoAdmin = false;
 let nextGameTime = !demoAdmin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
 const totalUsers = 10;
 let game_started = false;
-const userResponses = {};
+const totalMatchPercentage = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 const {calculateQuestionMatches} = require('./services/matching/calculateQuestionMatches');
@@ -39,7 +39,16 @@ const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
 // -----> UserPoole
-const userPool = {};
+const userPool = { 
+  1: {
+  img: 'https://images.unsplash.com/photo-1498529381350-89c2e7ccc430?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+  match: 0
+  },
+  2: {
+    img: 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+    match: 0
+  }
+};
 
 
 
@@ -99,7 +108,6 @@ io.on('connection', function (socket) {
   function startGame() {
     //create first question slot for responses 
     questionResponses[questionIndex] = {};
-    questionResponses
     fetch(`http://localhost:5000/questions/${questionIndex}`)
     .then(res => res.json())
     .then(json => {
@@ -123,13 +131,15 @@ io.on('connection', function (socket) {
   function emitTimer() {
     if (gameRoomTimer < 0){
       // Calculate match percentage
-      calculateQuestionMatches(questionOneAnswers, 1, (percentageObject) => {
+      calculateQuestionMatches(questionResponses, questionIndex, (percentageObject) => {
         console.log(percentageObject);
+        totalMatchPercentage[questionIndex] = percentageObject; 
         io.emit('perQMatches', percentageObject);
-      
+        questionIndex++;
+        questionResponses[questionIndex] = {};
         getQuestion(questionIndex);
         gameRoomTimer = 15
-        questionIndex++;
+      
       }) 
     }
     io.emit('gameRoomTimer', gameRoomTimer);
@@ -156,7 +166,8 @@ io.on('connection', function (socket) {
 
   function addUserResponse(userResponse) {
     const {q_id, user_id, answer} = userResponse;
-    const questionObject = questionResponses[q_id];
+    let questionObject = questionResponses[q_id];
+    console.log("Current question object", questionObject);
     questionObject[user_id] = answer;
   
     console.log(questionResponses);
