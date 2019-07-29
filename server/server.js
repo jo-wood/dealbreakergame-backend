@@ -13,6 +13,7 @@ let game_started = false;
 const userResponses = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
+const {calculateQuestionMatches} = require('./services/matching/calculateQuestionMatches');
 let gameRoomTimer = 15;  // declared outside of io
 
 
@@ -116,22 +117,20 @@ io.on('connection', function (socket) {
     });
   }
 
-
   //set game room timer and when timer hits zero send new question and reset timer (15)
   // let gameRoomTimer = 15; // inside io connection
   // let questionIndex = 1; // inside io connection
   function emitTimer() {
     if (gameRoomTimer < 0){
       // Calculate match percentage
-      const questionMatches = calculateQuestionMatches(questionResponses, (percentageObject) => {
-      
-        io.emit('perQMatches', questionMatch);
+      calculateQuestionMatches(questionOneAnswers, 1, (percentageObject) => {
+        console.log(percentageObject);
+        io.emit('perQMatches', percentageObject);
       
         getQuestion(questionIndex);
         gameRoomTimer = 15
         questionIndex++;
-        
-      });
+      }) 
     }
     io.emit('gameRoomTimer', gameRoomTimer);
     gameRoomTimer--;
