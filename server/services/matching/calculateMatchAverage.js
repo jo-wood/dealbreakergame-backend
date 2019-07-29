@@ -29,7 +29,6 @@ module.exports = {
     averageResults = {};
 
     Object.keys(responseObject).forEach( (question) => {
-      //console.log(question);
       
       Object.keys(responseObject[question]).forEach( (currentUser) => {
         const matchData = responseObject[question][currentUser];
@@ -40,15 +39,18 @@ module.exports = {
           for (let matchUser in matchData) {
             averageResults[currentUser][matchUser] += matchData[matchUser];
           }
-        }
-        
-        
-        
+        }           
       })
-      
-      
     })
     
+    // Calculate Average
+    for (user in averageResults) {
+      for (matches in averageResults[user]) {
+        console.log(averageResults[user][matches] / numOfQuestions);
+        averageResults[user][matches] = averageResults[user][matches] / numOfQuestions
+      }
+    }
+
     callback(averageResults);
 
   }
