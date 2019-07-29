@@ -13,7 +13,8 @@ let game_started = false;
 const totalMatchPercentage = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
-const {calculateQuestionMatches} = require('./services/matching/calculateQuestionMatches');
+const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
+const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 let gameRoomTimer = 15;  // declared outside of io
 
 
@@ -134,12 +135,14 @@ io.on('connection', function (socket) {
       calculateQuestionMatches(questionResponses, questionIndex, (percentageObject) => {
         console.log(percentageObject);
         totalMatchPercentage[questionIndex] = percentageObject; 
-        io.emit('perQMatches', percentageObject);
-        questionIndex++;
-        questionResponses[questionIndex] = {};
-        getQuestion(questionIndex);
-        gameRoomTimer = 15
-      
+        
+        calculateNewMatchAverage(totalMatchPercentage, (newMatchAvg) => {
+          io.emit('perQMatches', newMatchAvg);
+          questionIndex++;
+          questionResponses[questionIndex] = {};
+          getQuestion(questionIndex);
+          gameRoomTimer = 15
+        })         
       }) 
     }
     io.emit('gameRoomTimer', gameRoomTimer);
