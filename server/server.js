@@ -10,9 +10,11 @@ let demoAdmin = false;
 let nextGameTime = !demoAdmin ? new Date(Date.now()).setHours(20, 0, 0, 0) : new Date(Date.now());
 const totalUsers = 10;
 let game_started = false;
-const userResponses = {};
+const totalMatchPercentage = {};
 const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
+const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
+const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 let gameRoomTimer = 15;  // declared outside of io
 
 
@@ -38,7 +40,16 @@ const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
 // -----> UserPoole
-const userPool = {};
+const userPool = { 
+  1: {
+  img: 'https://images.unsplash.com/photo-1498529381350-89c2e7ccc430?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+  match: 0
+  },
+  2: {
+    img: 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+    match: 0
+  }
+};
 
 
 
@@ -98,7 +109,6 @@ io.on('connection', function (socket) {
   function startGame() {
     //create first question slot for responses 
     questionResponses[questionIndex] = {};
-    questionResponses
     fetch(`http://localhost:5000/questions/${questionIndex}`)
     .then(res => res.json())
     .then(json => {
@@ -116,15 +126,24 @@ io.on('connection', function (socket) {
     });
   }
 
-
   //set game room timer and when timer hits zero send new question and reset timer (15)
   // let gameRoomTimer = 15; // inside io connection
   // let questionIndex = 1; // inside io connection
   function emitTimer() {
     if (gameRoomTimer < 0){
-      getQuestion(questionIndex);
-      gameRoomTimer = 15
-      questionIndex++;
+      // Calculate match percentage
+      calculateQuestionMatches(questionResponses, questionIndex, (percentageObject) => {
+        console.log(percentageObject);
+        totalMatchPercentage[questionIndex] = percentageObject; 
+        
+        calculateNewMatchAverage(totalMatchPercentage, (newMatchAvg) => {
+          io.emit('perQMatches', newMatchAvg);
+          questionIndex++;
+          questionResponses[questionIndex] = {};
+          getQuestion(questionIndex);
+          gameRoomTimer = 15
+        })         
+      }) 
     }
     io.emit('gameRoomTimer', gameRoomTimer);
     gameRoomTimer--;
@@ -150,9 +169,10 @@ io.on('connection', function (socket) {
 
   function addUserResponse(userResponse) {
     const {q_id, user_id, answer} = userResponse;
-    questionResponses[q_id] = { 
-      [user_id]: answer
-    };
+    let questionObject = questionResponses[q_id];
+    console.log("Current question object", questionObject);
+    questionObject[user_id] = answer;
+  
     console.log(questionResponses);
     //set the number of responses to question so far
     totalResponsesToCurrentQuestion = Object.keys(questionResponses[q_id]).length;
@@ -169,8 +189,8 @@ io.on('connection', function (socket) {
       // insert user_id and answer
       totalResponsesToCurrentQuestion = 0;
     }
-
-    io.emit('perQMatches', questionMatch);
+    // const questionMatches = calculateQuestionMatches(questionResponses, ();
+    // io.emit('perQMatches', questionMatch);
   });
 
   // game over
