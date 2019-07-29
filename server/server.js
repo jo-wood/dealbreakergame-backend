@@ -122,9 +122,16 @@ io.on('connection', function (socket) {
   // let questionIndex = 1; // inside io connection
   function emitTimer() {
     if (gameRoomTimer < 0){
-      getQuestion(questionIndex);
-      gameRoomTimer = 15
-      questionIndex++;
+      // Calculate match percentage
+      const questionMatches = calculateQuestionMatches(questionResponses, (percentageObject) => {
+      
+        io.emit('perQMatches', questionMatch);
+      
+        getQuestion(questionIndex);
+        gameRoomTimer = 15
+        questionIndex++;
+        
+      });
     }
     io.emit('gameRoomTimer', gameRoomTimer);
     gameRoomTimer--;
@@ -150,9 +157,9 @@ io.on('connection', function (socket) {
 
   function addUserResponse(userResponse) {
     const {q_id, user_id, answer} = userResponse;
-    questionResponses[q_id] = { 
-      [user_id]: answer
-    };
+    const questionObject = questionResponses[q_id];
+    questionObject[user_id] = answer;
+  
     console.log(questionResponses);
     //set the number of responses to question so far
     totalResponsesToCurrentQuestion = Object.keys(questionResponses[q_id]).length;
@@ -169,8 +176,8 @@ io.on('connection', function (socket) {
       // insert user_id and answer
       totalResponsesToCurrentQuestion = 0;
     }
-
-    io.emit('perQMatches', questionMatch);
+    // const questionMatches = calculateQuestionMatches(questionResponses, ();
+    // io.emit('perQMatches', questionMatch);
   });
 
   // game over
