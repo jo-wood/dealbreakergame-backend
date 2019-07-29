@@ -43,11 +43,11 @@ const knexLogger = require('knex-logger');
 const userPool = { 
   1: {
   img: 'https://images.unsplash.com/photo-1498529381350-89c2e7ccc430?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  match: 0
+  match: 2
   },
   2: {
     img: 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-    match: 0
+    match: 3
   }
 };
 
@@ -112,7 +112,7 @@ io.on('connection', function (socket) {
     fetch(`http://localhost:5000/questions/${questionIndex}`)
     .then(res => res.json())
     .then(json => {
-      questionIndex++;
+      //questionIndex++;
       const questionData = json[0];
       emitTimer();
       // need to make the userPool incluse specifc user Data (pics)
@@ -137,6 +137,7 @@ io.on('connection', function (socket) {
         totalMatchPercentage[questionIndex] = percentageObject; 
         
         calculateNewMatchAverage(totalMatchPercentage, (newMatchAvg) => {
+          console.log('NEW-MATCH-AVERAGE', newMatchAvg);
           io.emit('perQMatches', newMatchAvg);
           questionIndex++;
           questionResponses[questionIndex] = {};

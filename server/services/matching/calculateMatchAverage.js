@@ -26,6 +26,7 @@ module.exports = {
   
   calculateNewMatchAverage: (responseObject, callback) => {
     const numOfQuestions = Object.keys(responseObject).length;
+  
     averageResults = {};
 
     Object.keys(responseObject).forEach( (question) => {
@@ -51,7 +52,11 @@ module.exports = {
       }
     }
 
-    callback(averageResults);
+    if (numOfQuestions === 1) {
+      callback(responseObject[1]); // Format ResponseObject for question 1 on client
+    } else {
+      callback(averageResults);
+    }
 
   }
   
