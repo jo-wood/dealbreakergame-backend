@@ -109,7 +109,7 @@ io.on('connection', function (socket) {
         if (game_started) {
           emitTimer();
         }
-3      }, 1000);
+      }, 1000);
     });
   }
 
@@ -146,10 +146,13 @@ io.on('connection', function (socket) {
   }
 
   function addUserResponse(userResponse) {
-    let currentQuestionObject = questionResponses[questionIndex];
-    currentQuestionObject[userResponse.user_id] = userResponse.answer;
+    const {q_id, user_id, answer} = userResponse;
+    questionResponses[q_id] = { 
+      [user_id]: answer
+    };
+    console.log(questionResponses);
     //set the number of responses to question so far
-    totalResponsesToCurrentQuestion = Object.keys(questionResponses[questionIndex]).length;
+    totalResponsesToCurrentQuestion = Object.keys(questionResponses[q_id]).length;
   }
 
   //setInterval( emitTimer, 2000);  // slow down socket connection
