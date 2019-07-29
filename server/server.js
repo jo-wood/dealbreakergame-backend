@@ -68,7 +68,10 @@ io.on('connection', function (socket) {
 
   // New connected user --> store in local object
   socket.on('newUser', (userInfo) => {
-    userPool[userInfo.user_id] = userInfo.profile_picture;
+    userPool[userInfo.user_id] = {
+      img: userInfo.profile_picture,
+      match: 0
+    }
   });
 
   //check if the time is render game
