@@ -4,6 +4,7 @@ const { setUpUsers } = require('./setUpUsers');
 const { sortedUserMatches } = require('./sortedUserMatches');
 const { calculateMatchAverage } = require('./calculateMatchAverage');
 const { calculatePerQuestionMatch } = require('./calculatePerQuestionMatch');
+//const { finalGameData } = require('../../tests/insertMatchHistory_test');
 
 function calculateSumMatches(game) {
   let setUp = setUpUsers(game);
@@ -18,17 +19,24 @@ function calculateSumMatches(game) {
       let userChoice = answers[user];
       // console.log(userChoice, answers);
       let percent = calculatePerQuestionMatch(userChoice, answers);
+      //console.log('PERCENT: ', percent);
       userQTally.push(percent)            
     }
     let average = calculateMatchAverage(userQTally, totalQuestions)
+    //console.log('AVG: ', average);
     delete average[user];
     let sorted = sortedUserMatches(average);
+    //console.log(sorted);
     finalRanking[user] = sorted;
   }  
   return finalRanking;
 }
 
-//test dummyAnswers
-console.log('SUM-MATCHES: ', calculateSumMatches(gameAnswers))
-let questionAnswers = gameAnswers.q_Id_One;
-//console.log(calculatePerQuestionMatch('optionA', questionAnswers))
+
+
+
+// //test dummyAnswers
+//console.log('SUM-MATCHES: ', calculateSumMatches(gameAnswers))
+//console.log('done');
+// let questionAnswers = gameAnswers.q_Id_One;
+// //console.log(calculatePerQuestionMatch('optionA', questionAnswers))

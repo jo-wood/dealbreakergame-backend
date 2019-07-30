@@ -1,5 +1,5 @@
 module.exports = {
-  sortedUserMatches: function(userMatchLog) {
+  newSortMatchesArray: function(userMatchLog) {
     //console.log(userMatchLog);
     //convert to array to sort based on match percent
     var sortedArray = [];
@@ -10,15 +10,15 @@ module.exports = {
     sortedArray.sort(function(a, b) {
         return b[1] - a[1];
     });
-    console.log('SORTED-ARRAY: ', sortedArray);
     //convert back to object
-    let resultObject = {}
+    let resultObjectArray = []
     for(let userLog of sortedArray) {
-        let userID = userLog[0];
-        resultObject[userID] = userLog[1];
+        let tempObj = {};
+        tempObj[userLog[0]] = userLog[1];
+        resultObjectArray.push(tempObj);
     }
-    console.log('ResultObject: ', resultObject);
+    //console.log('ResultObject: ', resultObjectArray);
     //small issue it is an object with this return and not a array that can be sorted and incrimented
-    return resultObject;
+    return resultObjectArray;
   }
 }

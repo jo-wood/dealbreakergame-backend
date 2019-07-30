@@ -16,6 +16,8 @@ const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
 const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 const { finalRanking } = require('./services/gameAnswers/finalGameRanking');
+const { compileSumMatches } = require('./services/matching/compileSumMatches');
+
 let gameRoomTimer = 15;  // declared outside of io
 console.log(typeof finalRanking);
 
@@ -39,10 +41,11 @@ const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
+const insertMatch = require('./utils/insertMatchHistory')(knex);
 
-// -----> UserPoole
+// -----> UserPoole and Profiles
 const userPool = {};
-
+const usersProfiles = {};
 
 // -----> SocketServer
 socketServer.listen(5001);
@@ -70,9 +73,15 @@ io.on('connection', function (socket) {
 
   // New connected user --> store in local object
   socket.on('newUser', (userInfo) => {
+    const {user_id, profile_picture, instagram_id, full_name} = userInfo;
     userPool[userInfo.user_id] = {
       img: userInfo.profile_picture,
       match: 0
+    }
+    usersProfiles[userInfo.user_id] = {
+      instagram_id: userInfo.instagram_id,
+      full_name: userInfo.full_name,
+      img: userInfo.profile_picture
     }
   });
 
@@ -146,18 +155,10 @@ io.on('connection', function (socket) {
   function getQuestion(questionIndex) {
     if (questionIndex > 10) {
       game_started = false;
-      io.emit('gameOver', {game_started: false});
-      console.log('FINAL-GAME-DATA: ', questionResponses);
-      console.log(typeof finalRanking);
-      //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
-
-
-      let totalRanking = finalRanking(questionResponses);
-      console.log('TOTAL-RANKING: ', totalRanking);
-      questionIndex = 1;
       clearInterval(gameInterval);
-      console.log(game_started, 'QUESTION-INDEX: ', questionIndex);
-      //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
+      questionIndex = 1;
+      io.emit('gameOver', {game_started: false});
+      onGameFinish();
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
         .then(res => res.json())
@@ -166,6 +167,29 @@ io.on('connection', function (socket) {
           io.emit('NextGameRoomQuestion', questionData);
         });
       }
+
+  }
+
+  function onGameFinish() {
+    console.log('FINAL-GAME-DATA: ', questionResponses);
+    console.log("GAME-STATUS: ", game_started, 'QUESTION-INDEX: ', questionIndex);
+    
+    let totalRanking = finalRanking(questionResponses);
+    console.log('TOTAL-RANKING: ', totalRanking);
+    
+  
+    //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
+    //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
+
+    compileSumMatches(questionResponses, (sumMatches) => {
+      console.log('SUM-MATCHES: ', sumMatches);
+
+      // insert Match History
+      insertMatch.insertMatchHistory(sumMatches, (insertSummary) => {
+        console.log(insertSummary);
+      });
+
+    });
 
   }
 
