@@ -16,7 +16,7 @@ const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
 const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 const { finalRanking } = require('./services/gameAnswers/finalGameRanking');
-const { calculateSumMatches } = require('./services/matching/calculateMatchPercentage');
+const { compileSumMatches } = require('./services/matching/compileSumMatches');
 let gameRoomTimer = 15;  // declared outside of io
 console.log(typeof finalRanking);
 
@@ -169,14 +169,20 @@ io.on('connection', function (socket) {
   }
 
   function onGameFinish() {
-      console.log('FINAL-GAME-DATA: ', questionResponses);
-      
-      let totalRanking = finalRanking(questionResponses);
-      console.log('TOTAL-RANKING: ', totalRanking);
-      
-      console.log("GAME-STATUS: ", game_started, 'QUESTION-INDEX: ', questionIndex);
-      //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
-      //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
+    console.log('FINAL-GAME-DATA: ', questionResponses);
+    console.log("GAME-STATUS: ", game_started, 'QUESTION-INDEX: ', questionIndex);
+    
+    let totalRanking = finalRanking(questionResponses);
+    console.log('TOTAL-RANKING: ', totalRanking);
+    
+  
+    //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
+    //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
+
+    compileSumMatches(questionResponses, (sumMatches) => {
+      console.log('SUM-MATCHES: ', sumMatches);
+    });
+
   }
 
   function addUserResponse(userResponse) {
