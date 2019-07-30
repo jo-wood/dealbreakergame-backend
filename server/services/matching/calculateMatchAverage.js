@@ -1,6 +1,6 @@
 module.exports = {
   calculateMatchAverage: function(qArr, totalQuestions, callback) {
-    console.log(qArr);
+    //console.log(qArr);
     let userTotals = {};
     for (let q of qArr) {
     let users = Object.keys(q);

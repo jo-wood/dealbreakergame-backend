@@ -17,6 +17,7 @@ const { calculateQuestionMatches } = require('./services/matching/calculateQuest
 const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 const { finalRanking } = require('./services/gameAnswers/finalGameRanking');
 const { compileSumMatches } = require('./services/matching/compileSumMatches');
+
 let gameRoomTimer = 15;  // declared outside of io
 console.log(typeof finalRanking);
 
@@ -40,6 +41,7 @@ const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
+const { insertMatchHistory } = require('./utils/insertMatchHistory')(knex);
 
 // -----> UserPoole and Profiles
 const userPool = {};
@@ -181,6 +183,12 @@ io.on('connection', function (socket) {
 
     compileSumMatches(questionResponses, (sumMatches) => {
       console.log('SUM-MATCHES: ', sumMatches);
+
+      // insert Match History
+      insertMatchHistory(sumMatches, (insertSummary) => {
+
+      });
+
     });
 
   }

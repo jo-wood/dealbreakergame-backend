@@ -3,6 +3,7 @@ const { setUpUsers } = require('./setUpUsers');
 const { sortedUserMatches } = require('./sortedUserMatches');
 const { calculateMatchAverage } = require('./calculateMatchAverage');
 const { calculatePerQuestionMatch } = require('./calculatePerQuestionMatch');
+const { newSortMatchesArray } = require('./newSortMatches');
 
 module.exports  = {
 
@@ -23,7 +24,10 @@ module.exports  = {
       }
       let average = calculateMatchAverage(userQTally, totalQuestions)
       delete average[user];
-      let sorted = sortedUserMatches(average);
+
+      //let sorted = sortedUserMatches(average);
+      let sorted = newSortMatchesArray(average)
+
       finalRanking[user] = sorted;
     }  
     callback(finalRanking);
