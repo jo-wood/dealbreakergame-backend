@@ -7,6 +7,7 @@ const { degreeOfSeperation } = require('./degreeOfSeperation');
 
 module.exports = {
   questionMatchPercentage: function(user_choice, match_choice) {
+    //console.log('USER: ', user_choice, 'MATCH: ', match_choice);
     let map = degreeOfSeperation(user_choice);
     let degree = 0;
       switch (match_choice) {
