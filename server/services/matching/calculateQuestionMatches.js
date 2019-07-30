@@ -13,7 +13,7 @@ module.exports = {
         console.log("MATCH USER", matchUser);
         if (results[currentUser][matchUser] === 100) {
           console.log(`${currentUser} and ${matchUser} had perfect match`)
-          if (currentAnswerData !== matchUser){
+          if (currentUser !== matchUser){
             perfectMatches[currentUser] = { [matchUser]: {
               q_id: questionIndex,
               user_b_answered: currentAnswerData[currentUser],
