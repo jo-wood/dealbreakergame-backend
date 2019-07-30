@@ -16,6 +16,7 @@ const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
 const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
 const { finalRanking } = require('./services/gameAnswers/finalGameRanking');
+const { calculateSumMatches } = require('./services/matching/calculateMatchPercentage');
 let gameRoomTimer = 15;  // declared outside of io
 console.log(typeof finalRanking);
 
@@ -40,9 +41,9 @@ const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
-// -----> UserPoole
+// -----> UserPoole and Profiles
 const userPool = {};
-
+const usersProfiles = {};
 
 // -----> SocketServer
 socketServer.listen(5001);
@@ -70,9 +71,15 @@ io.on('connection', function (socket) {
 
   // New connected user --> store in local object
   socket.on('newUser', (userInfo) => {
+    const {user_id, profile_picture, instagram_id, full_name} = userInfo;
     userPool[userInfo.user_id] = {
       img: userInfo.profile_picture,
       match: 0
+    }
+    usersProfiles[userInfo.user_id] = {
+      instagram_id: userInfo.instagram_id,
+      full_name: userInfo.full_name,
+      img: userInfo.profile_picture
     }
   });
 
@@ -146,18 +153,10 @@ io.on('connection', function (socket) {
   function getQuestion(questionIndex) {
     if (questionIndex > 10) {
       game_started = false;
-      io.emit('gameOver', {game_started: false});
-      console.log('FINAL-GAME-DATA: ', questionResponses);
-      console.log(typeof finalRanking);
-      //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
-
-
-      let totalRanking = finalRanking(questionResponses);
-      console.log('TOTAL-RANKING: ', totalRanking);
-      questionIndex = 1;
       clearInterval(gameInterval);
-      console.log(game_started, 'QUESTION-INDEX: ', questionIndex);
-      //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
+      questionIndex = 1;
+      io.emit('gameOver', {game_started: false});
+      onGameFinish();
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
         .then(res => res.json())
@@ -167,6 +166,17 @@ io.on('connection', function (socket) {
         });
       }
 
+  }
+
+  function onGameFinish() {
+      console.log('FINAL-GAME-DATA: ', questionResponses);
+      
+      let totalRanking = finalRanking(questionResponses);
+      console.log('TOTAL-RANKING: ', totalRanking);
+      
+      console.log("GAME-STATUS: ", game_started, 'QUESTION-INDEX: ', questionIndex);
+      //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
+      //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
   }
 
   function addUserResponse(userResponse) {
