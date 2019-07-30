@@ -11,7 +11,7 @@ module.exports = {
       
       for (matchUser in results[currentUser]) {
         if (results[currentUser][matchUser] === 100) {
-          perfectMatches[currentUser] = { matchUser: {
+          perfectMatches[currentUser] = { [matchUser]: {
             q_id: questionIndex,
             user_b_answered: currentAnswerData[currentUser],
             sameAnswer: true
