@@ -25,6 +25,7 @@ console.log(typeof finalRanking);
 let questionIndex = 1;  //
 const questionResponses = {};
 let totalResponsesToCurrentQuestion = 0;
+const totalPerfectMatches = {};
 
 require('dotenv').config()
 const ENV = process.env.ENV || "development";
@@ -134,10 +135,10 @@ io.on('connection', function (socket) {
   function emitTimer() {
     if (gameRoomTimer < 0){
       // Calculate match percentage
-      calculateQuestionMatches(questionResponses, questionIndex, (percentageObject) => {
+      calculateQuestionMatches(questionResponses, questionIndex, (percentageObject, perfectMatches) => {
         console.log(percentageObject);
-        totalMatchPercentage[questionIndex] = percentageObject; 
-        
+        totalMatchPercentage[questionIndex] = percentageObject;
+        totalPerfectMatches[questionIndex] = perfectMatches;
         calculateNewMatchAverage(totalMatchPercentage, (newMatchAvg) => {
           console.log('NEW-MATCH-AVERAGE', newMatchAvg);
           io.emit('perQMatches', newMatchAvg);
@@ -185,7 +186,7 @@ io.on('connection', function (socket) {
       console.log('SUM-MATCHES: ', sumMatches);
 
       // insert Match History
-      insertMatch.insertMatchHistory(sumMatches, (insertSummary) => {
+      insertMatch.insertMatchHistory(sumMatches, totalPerfectMatches, (insertSummary) => {
         console.log(insertSummary);
       });
 

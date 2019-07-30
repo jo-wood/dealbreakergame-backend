@@ -1,6 +1,6 @@
 module.exports = (knex) => ({
 
-  insertMatchHistory: (sumMatches, callback) => {
+  insertMatchHistory: (sumMatches, totalPerfectMatches, callback) => {
     console.log("test");
 
     // Iterate through users
