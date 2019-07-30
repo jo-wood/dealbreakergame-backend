@@ -19,7 +19,7 @@ compileSumMatches(finalGameData, (sumMatches) => {
 
   // insert Match History
   insertMatchHistory(sumMatches, (insertSummary) => {
-
+    console.log(insertSummary);
   });
 
 

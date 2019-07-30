@@ -41,7 +41,7 @@ const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 const morgan = require('morgan');
 const knexLogger = require('knex-logger');
-const { insertMatchHistory } = require('./utils/insertMatchHistory')(knex);
+const insertMatch = require('./utils/insertMatchHistory')(knex);
 
 // -----> UserPoole and Profiles
 const userPool = {};
@@ -185,8 +185,8 @@ io.on('connection', function (socket) {
       console.log('SUM-MATCHES: ', sumMatches);
 
       // insert Match History
-      insertMatchHistory(sumMatches, (insertSummary) => {
-
+      insertMatch.insertMatchHistory(sumMatches, (insertSummary) => {
+        console.log(insertSummary);
       });
 
     });

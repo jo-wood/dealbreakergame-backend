@@ -1,4 +1,4 @@
-module.exports = (knex) = ({
+module.exports = (knex) => ({
 
   insertMatchHistory: (sumMatches, callback) => {
     console.log("test");
@@ -16,8 +16,32 @@ module.exports = (knex) = ({
           // Insert Each Match in DB
           console.log(matchUser, match[matchUser]);
 
+          const currentDate = new Date()
+          const year = currentDate.getFullYear();
+          const month = currentDate.getMonth();
+          const day = currentDate.getDay();
 
-
+          knex
+            .insert({
+              user_a: user,
+              user_b: matchUser,
+              match_percent: match[matchUser],
+              match_date: `${year}-${month}-${day}`, 
+              match_detail_id: null,
+              
+            })
+            .into('match')
+            .returning('id')
+            .then(([id]) => {
+              const returnObject = {
+                status: 'Match history insert completed',
+                id: id
+              }
+              callback(returnObject);
+            })
+            .catch((err) => {
+              console.log(err);
+            })
         }
       })
     })
