@@ -15,8 +15,9 @@ const { userAnsPerQues } = require('./services/gameAnswers/userAnsPerQues');
 const { totalGameAnswers } = require('./services/gameAnswers/totalGameAnswers');
 const { calculateQuestionMatches } = require('./services/matching/calculateQuestionMatches');
 const { calculateNewMatchAverage } = require('./services/matching/calculateMatchAverage');
+const { finalRanking } = require('./services/gameAnswers/finalGameRanking');
 let gameRoomTimer = 15;  // declared outside of io
-
+console.log(typeof finalRanking);
 
 // Question Data
 let questionIndex = 1;  //
@@ -40,17 +41,7 @@ const morgan = require('morgan');
 const knexLogger = require('knex-logger');
 
 // -----> UserPoole
-const userPool = { 
-  1: {
-  img: 'https://images.unsplash.com/photo-1498529381350-89c2e7ccc430?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  match: 2
-  },
-  2: {
-    img: 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-    match: 3
-  }
-};
-
+const userPool = {};
 
 
 // -----> SocketServer
@@ -154,6 +145,10 @@ io.on('connection', function (socket) {
     if (questionIndex > 10) {
       game_started = false;
       io.emit('gameOver', {game_started: false});
+      console.log('FINAL-GAME-DATA: ', questionResponses);
+      console.log(typeof finalRanking);
+      let totalRanking = finalRanking(questionResponses);
+      console.log('TOTAL-RANKING: ', totalRanking);
       questionIndex = 1;
       console.log(game_started);
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
