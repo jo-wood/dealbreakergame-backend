@@ -20,8 +20,8 @@ module.exports = {
     for (let result in userTotals) {
       userTotals[result] = Math.floor(userTotals[result] / totalQuestions);
     }
-    //return userTotals;  
-    callback(userTotals);
+    return userTotals;  
+    //callback(userTotals);
   },
   
   calculateNewMatchAverage: (responseObject, callback) => {

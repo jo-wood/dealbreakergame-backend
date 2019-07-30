@@ -28,7 +28,7 @@ function calculateSumMatches(game) {
   return finalRanking;
 }
 
-// test dummyAnswers
-// console.log(calculateSumMatches(gameAnswers))
-// let questionAnswers = gameAnswers.q_Id_One;
-// console.log(calculatePerQuestionMatch('optionA', questionAnswers))
+//test dummyAnswers
+console.log('SUM-MATCHES: ', calculateSumMatches(gameAnswers))
+let questionAnswers = gameAnswers.q_Id_One;
+//console.log(calculatePerQuestionMatch('optionA', questionAnswers))
