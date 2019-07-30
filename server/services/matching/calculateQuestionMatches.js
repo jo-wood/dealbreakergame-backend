@@ -8,8 +8,9 @@ module.exports = {
     let perfectMatches = {};
     for (currentUser in currentAnswerData) {
       results[currentUser] = calculatePerQuestionMatch(currentAnswerData[currentUser], currentAnswerData);
-      
+      console.log("CURRENT USER", currentUser);
       for (matchUser in results[currentUser]) {
+        console.log("MATCH USER", matchUser);
         if (results[currentUser][matchUser] === 100) {
           perfectMatches[currentUser] = { [matchUser]: {
             q_id: questionIndex,
