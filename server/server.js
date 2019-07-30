@@ -149,6 +149,9 @@ io.on('connection', function (socket) {
       io.emit('gameOver', {game_started: false});
       console.log('FINAL-GAME-DATA: ', questionResponses);
       console.log(typeof finalRanking);
+      //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
+
+
       let totalRanking = finalRanking(questionResponses);
       console.log('TOTAL-RANKING: ', totalRanking);
       questionIndex = 1;
