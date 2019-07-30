@@ -148,7 +148,7 @@ exports.seed = function (knex, Promise) {
           age_perference_max: 30,
           instagram_id: '3437822196',
           image_url: 'https://scontent.cdninstagram.com/vp/5c562a5550d35dc3ff2fadbad1f6913b/5DB424DD/t51.2885-19/s150x150/17437669_1797569223842145_7568508965768658944_a.jpg?_nc_ht=scontent.cdninstagram.com'
-        }     
+        }
       ]);
     });
 };
