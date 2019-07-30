@@ -91,11 +91,13 @@ io.on('connection', function (socket) {
     // Send Message Redirect from WaitingRoom to GameRoom
     io.emit('gameStarted', {start: true} );
     game_started = true;
+    questionIndex = 1;
       setTimeout(() => {
         startGame();
       }, 4000);
   }
   
+  let gameInterval;
   // set inital game parameters if the game has been started
   function startGame() {
     //create first question slot for responses 
@@ -109,7 +111,7 @@ io.on('connection', function (socket) {
       // need to make the userPool incluse specifc user Data (pics)
       io.emit('userPool', userPool);
       io.emit('initializeGame', questionData);
-      setInterval( () => {
+      gameInterval = setInterval( () => {
         if (game_started) {
           emitTimer();
         }
@@ -150,7 +152,8 @@ io.on('connection', function (socket) {
       let totalRanking = finalRanking(questionResponses);
       console.log('TOTAL-RANKING: ', totalRanking);
       questionIndex = 1;
-      console.log(game_started);
+      clearInterval(gameInterval);
+      console.log(game_started, 'QUESTION-INDEX: ', questionIndex);
       //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
     } else {
       fetch(`http://localhost:5000/questions/${questionIndex}`)
