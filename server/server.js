@@ -186,7 +186,7 @@ io.on('connection', function (socket) {
       console.log('SUM-MATCHES: ', sumMatches);
 
       // insert Match History
-      insertMatch.insertMatchHistory(sumMatches, (insertSummary) => {
+      insertMatch.insertMatchHistory(sumMatches, totalPerfectMatches, (insertSummary) => {
         console.log(insertSummary);
       });
 
