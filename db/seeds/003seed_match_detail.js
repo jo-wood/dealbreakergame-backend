@@ -24,7 +24,7 @@ exports.seed = function (knex, Promise) {
         {
           q_id: 8,
           user_b_answered: 'optionC',
-          sameAnswer: false,          
+          sameAnswer: false,
         },
         {
           q_id: 4,
@@ -44,7 +44,72 @@ exports.seed = function (knex, Promise) {
         {
           q_id: 7,
           user_b_answered: 'optionC',
-          sameAnswer: false,          
+          sameAnswer: false,
+        },
+        {
+          q_id: 9,
+          user_b_answered: 'optionA',
+          sameAnswer: true,
+        },
+        {
+          q_id: 2,
+          user_b_answered: 'optionC',
+          sameAnswer: false,
+        },
+        {
+          q_id: 5,
+          user_b_answered: 'optionB',
+          sameAnswer: true,
+        },
+        {
+          q_id: 7,
+          user_b_answered: 'optionA',
+          sameAnswer: false,
+        },
+        {
+          q_id: 2,
+          user_b_answered: 'optionD',
+          sameAnswer: true,
+        },
+        {
+          q_id: 5,
+          user_b_answered: 'optionA',
+          sameAnswer: true,
+        },
+        {
+          q_id: 2,
+          user_b_answered: 'optionA',
+          sameAnswer: false,
+        },
+        {
+          q_id: 8,
+          user_b_answered: 'optionB',
+          sameAnswer: true,
+        },
+        {
+          q_id: 1,
+          user_b_answered: 'optionA',
+          sameAnswer: true,
+        },
+        {
+          q_id: 9,
+          user_b_answered: 'optionC',
+          sameAnswer: false,
+        },
+        {
+          q_id: 1,
+          user_b_answered: 'optionB',
+          sameAnswer: true,
+        },
+        {
+          q_id: 4,
+          user_b_answered: 'optionC',
+          sameAnswer: false,
+        },
+        {
+          q_id: 2,
+          user_b_answered: 'optionC',
+          sameAnswer: true,
         }
       ]);
     });
