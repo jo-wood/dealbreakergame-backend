@@ -23,9 +23,9 @@ console.log(typeof finalRanking);
 
 // Question Data
 let questionIndex = 1;  //
-const questionResponses = {};
+let questionResponses = {};
 let totalResponsesToCurrentQuestion = 0;
-const totalPerfectMatches = {};
+let totalPerfectMatches = {};
 
 require('dotenv').config()
 const ENV = process.env.ENV || "development";
@@ -188,6 +188,10 @@ io.on('connection', function (socket) {
       // Emit sumMatches to be rendered on client results page
       setTimeout(() => {
         io.emit('userMatches', { rankedMatches: sumMatches, grabMatchesInfo: usersProfiles } );
+        // Reset Game State Data
+        questionResponses = {};
+        totalResponsesToCurrentQuestion = 0;
+        totalPerfectMatches = {};
       }, 4000);
 
       // insert Match History
@@ -200,7 +204,13 @@ io.on('connection', function (socket) {
   }
 
   function addUserResponse(userResponse) {
-    const {q_id, user_id, answer} = userResponse;
+    let {q_id, user_id, answer} = userResponse;
+
+    // Option C failsafe
+    if (answer === null || answer === "null") {
+      answer = "optionC";
+    }
+
     let questionObject = questionResponses[q_id];
     console.log("Current question object", questionObject);
     questionObject[user_id] = answer;
