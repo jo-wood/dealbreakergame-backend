@@ -12,7 +12,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Swimming',
           optionC: 'Hiking/Climbing',
           optionD: 'Walking',
-          gif_url: 'https://media.giphy.com/media/EgkNhBeY289z2/giphy.gif'
+          gif_url: 'https://giphy.com/embed/EgkNhBeY289z2'
         },
         {
           context: "How would you spend a free day?",
@@ -20,7 +20,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Organizing your closet',
           optionC: 'Shopping with your friend',
           optionD: 'Going to the movies',
-          gif_url: 'https://media.giphy.com/media/9r6FZQ5FI8CIYUpLEg/giphy.gif'
+          gif_url: 'https://giphy.com/embed/9r6FZQ5FI8CIYUpLEg'
         },
         {
           context: "Where will I find you at a party...?",
@@ -28,7 +28,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Play DJ, I bring the music',
           optionC: 'I make friends with the house pets',
           optionD: 'I try to start a conversation with someone',
-          gif_url: 'https://media.giphy.com/media/gImiuEnoNOmTm/giphy.gif'
+          gif_url: 'https://giphy.com/embed/gImiuEnoNOmTm'
         },
         {
           context: "My Ideal Workspace Is...",
@@ -36,7 +36,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'An Art Studio',
           optionC: 'An Office',
           optionD: 'Anywhere I can get Wifi',
-          gif_url: 'https://media.giphy.com/media/dbtDDSvWErdf2/giphy.gif'    //
+          gif_url: 'https://giphy.com/embed/dbtDDSvWErdf2'    //
         },
         {
           context: "What's your texting style?",
@@ -44,7 +44,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Full sentences with correct grammer',
           optionC: 'I just txt as quickly as pssible whtevr',
           optionD: 'Emoji city',
-          gif_url: 'https://media.giphy.com/media/3oEjHMrY1eFG566Jjy/giphy.gif'
+          gif_url: 'https://giphy.com/embed/3oEjHMrY1eFG566Jjy'
         }, 
         {
           context: "My Go-To Beverage Is...",
@@ -52,7 +52,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Water',
           optionC: 'Beer me',
           optionD: 'Wine. Wine, and then more wine.',
-          gif_url: 'https://media.giphy.com/media/e6TR9n00dL3JS/giphy.gif'
+          gif_url: 'https://giphy.com/embed/e6TR9n00dL3JS'
         }, 
         {
           context: "Which Words Best Describe You...?",
@@ -60,7 +60,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Dignified and Mysterious',
           optionC: 'Carefree and Creative',
           optionD: 'Modern and Stylish',
-          gif_url: 'https://media.giphy.com/media/JAsKtsJvzpd8k/giphy.gif'
+          gif_url: 'https://giphy.com/embed/ZBNLpSsFjHPeo'
         },
         {
           context: "What is a quote that inspires you?",
@@ -68,7 +68,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Fall In Love With Taking Care Of Yourself',
           optionC: 'Collect Memories Not Things',
           optionD: 'Hakuna matata',
-          gif_url: 'https://media.giphy.com/media/104ueR8J1OPM2s/giphy.gif'
+          gif_url: 'https://giphy.com/embed/104ueR8J1OPM2s'
         }, 
         {
           context: "What's Your Favorite Kind of Vacation?",
@@ -76,7 +76,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Cultural',
           optionC: 'Amusement Park',
           optionD: 'Active',
-          gif_url: 'https://media.giphy.com/media/xqsbYoFMzUzfy/giphy.gif'
+          gif_url: 'https://giphy.com/embed/xqsbYoFMzUzfy'
         }, 
         {
           context: 'Pick a Food',
@@ -84,7 +84,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Pad Thai',
           optionC: ' Sushi',
           optionD: 'Tacos',
-          gif_url: 'https://media.giphy.com/media/1rPVq3R9acPilzfLZO/giphy.gif'
+          gif_url: 'https://giphy.com/embed/1rPVq3R9acPilzfLZO'
         },
         {
           context: "What Is Your Spirit Animal?",
@@ -92,7 +92,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Peacock',
           optionC: 'Corgi',
           optionD: 'Doggie',
-          gif_url: 'https://media.giphy.com/media/1r91mystCQ6TmzyRUz/giphy.gif'
+          gif_url: 'https://giphy.com/embed/1r91mystCQ6TmzyRUz'
         }, 
         {
           context: "What are your typical mornings like?",
@@ -100,7 +100,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Blasting music while I shower and get ready',
           optionC: 'Taking my time to make breakfast and head out on time',
           optionD: 'Rolling out of bed and running to work',
-          gif_url: 'https://media.giphy.com/media/DrJm6F9poo4aA/giphy.gif'
+          gif_url: 'https://giphy.com/embed/DrJm6F9poo4aA'
         }, 
         {
           context: "It's your last meal on earth. What do you crave?",
@@ -108,7 +108,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Cheese, glorious cheese',
           optionC: 'Sugar',
           optionD: 'Steak',
-          gif_url: 'https://media.giphy.com/media/oiGCnybFPh6Q8/giphy.gif'
+          gif_url: 'https://giphy.com/embed/oiGCnybFPh6Q8'
         }, 
         {
           context: "How would your friends describe your personal wardrobe style?",
@@ -116,7 +116,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'The styles vary, but everything is neat, labeled, and organized',
           optionC: 'A decent amount of swag',
           optionD: 'Shirts. Pants. The basics.',
-          gif_url: 'https://media.giphy.com/media/leSaom8qAgopi/giphy.gif'
+          gif_url: 'https://giphy.com/embed/leSaom8qAgopi'
         }, 
         {
           context: "Which member of your friend group are you ?" ,
@@ -124,7 +124,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'The Good Friend',
           optionC: 'The Funny One',
           optionD: ' The Smart One',
-          gif_url: 'https://media.giphy.com/media/l1J9Llv1ztqa8cjZe/giphy.gif'
+          gif_url: 'https://giphy.com/embed/l1J9Llv1ztqa8cjZe'
         }, 
         {
           context: 'How do you want to impact the world?',
@@ -132,7 +132,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'By inventing something new',
           optionC: ' By leaving my mark on it',
           optionD: 'By creating an empire!',
-          gif_url: 'https://media.giphy.com/media/xL7PDV9frcudO/giphy.gif'
+          gif_url: 'https://giphy.com/embed/xL7PDV9frcudO'
         }, 
         {
           context: 'Pick a Favorite TV Show...',
@@ -140,7 +140,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Game of Thrones',
           optionC: 'This Is Us',
           optionD: 'Seinfeld',
-          gif_url: 'https://media.giphy.com/media/3o85xx8dDpwLQu6B20/giphy.gif'
+          gif_url: 'https://giphy.com/embed/3o85xx8dDpwLQu6B20'
         }, 
         {
           context: 'Which is your favorite holiday?',
@@ -156,7 +156,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Poker',
           optionC: 'Billiards ',
           optionD: 'Cranium',
-          gif_url: 'https://media.giphy.com/media/3MKKLNT2Zrfby/giphy.gif'
+          gif_url: 'https://giphy.com/embed/5ocAtoAPhIDcI'
         },
         {
           context: 'If you were to have a theme party, what would the theme be?',
@@ -164,7 +164,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'Does beer count as a theme?',
           optionC: 'A comic book or cartoon character',
           optionD: 'Ugly sweater',
-          gif_url: 'https://media.giphy.com/media/kqxb52SLORk6A/giphy.gif'
+          gif_url: 'https://giphy.com/embed/kqxb52SLORk6A'
         }
       ]);
     });
