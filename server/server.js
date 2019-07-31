@@ -186,8 +186,8 @@ io.on('connection', function (socket) {
       console.log('SUM-MATCHES: ', sumMatches);
 
       // Emit sumMatches to be rendered on client results page
-      io.emit('userMatches', sumMatches);
-      
+      io.emit('userMatches', { rankedMatches: sumMatches, grabMatchesInfo: usersProfiles } );
+
       // insert Match History
       insertMatch.insertMatchHistory(sumMatches, totalPerfectMatches, (insertSummary) => {
         console.log(insertSummary);
