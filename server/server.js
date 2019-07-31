@@ -23,9 +23,9 @@ console.log(typeof finalRanking);
 
 // Question Data
 let questionIndex = 1;  //
-const questionResponses = {};
+let questionResponses = {};
 let totalResponsesToCurrentQuestion = 0;
-const totalPerfectMatches = {};
+let totalPerfectMatches = {};
 
 require('dotenv').config()
 const ENV = process.env.ENV || "development";
@@ -175,18 +175,24 @@ io.on('connection', function (socket) {
     console.log('FINAL-GAME-DATA: ', questionResponses);
     console.log("GAME-STATUS: ", game_started, 'QUESTION-INDEX: ', questionIndex);
     
-    let totalRanking = finalRanking(questionResponses);
-    console.log('TOTAL-RANKING: ', totalRanking);
+    // let totalRanking = finalRanking(questionResponses);
+    // console.log('TOTAL-RANKING: ', totalRanking);
     
   
     //TEST FINAL RANKS ---> add dummy data to final ranking before calculateSumMatches
     //SORT MATCHES, PICK TOP 3, KNEX TO ADD 3 TO DATABASE
 
     compileSumMatches(questionResponses, (sumMatches) => {
-      console.log('SUM-MATCHES: ', sumMatches);
-
+      console.log('_AVG-SUM-MATCHES: ', sumMatches);
+      console.log('USER PROFILES: *****', usersProfiles);
       // Emit sumMatches to be rendered on client results page
-      io.emit('userMatches', { rankedMatches: sumMatches, grabMatchesInfo: usersProfiles } );
+      setTimeout(() => {
+        io.emit('userMatches', { rankedMatches: sumMatches, grabMatchesInfo: usersProfiles } );
+        // Reset Game State Data
+        questionResponses = {};
+        totalResponsesToCurrentQuestion = 0;
+        totalPerfectMatches = {};
+      }, 4000);
 
       // insert Match History
       insertMatch.insertMatchHistory(sumMatches, totalPerfectMatches, (insertSummary) => {
@@ -198,7 +204,13 @@ io.on('connection', function (socket) {
   }
 
   function addUserResponse(userResponse) {
-    const {q_id, user_id, answer} = userResponse;
+    let {q_id, user_id, answer} = userResponse;
+
+    // Option C failsafe
+    if (answer === null || answer === "null") {
+      answer = "optionC";
+    }
+
     let questionObject = questionResponses[q_id];
     console.log("Current question object", questionObject);
     questionObject[user_id] = answer;
