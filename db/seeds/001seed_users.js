@@ -49,8 +49,8 @@ exports.seed = function (knex, Promise) {
           image_url_hd: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=150&q=80'
         },
         {
-          full_name: 'June Bug',
-          username: 'junebug_99',
+          full_name: 'Sammy jacks',
+          username: 'sammy_jammy33',
           email: 'june@gmail.com',
           birthdate: '1985-08-22',
           access_token: '343782ahfjeeeioetu38293832e1a02e53f2',
@@ -58,9 +58,9 @@ exports.seed = function (knex, Promise) {
           interestedIn: 'female',
           age_perference_min: 20,
           age_perference_max: 35,
-          instagram_id: '219080136',
-          image_url: 'https://images.unsplash.com/photo-1528478794082-34720eead2c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80',
-          image_url_hd: 'https://images.unsplash.com/photo-1528478794082-34720eead2c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80'
+          instagram_id: '17197055565',
+          image_url: 'https://instagram.fykz1-1.fna.fbcdn.net/vp/cdafa8fb2cc42c510a3f0f4983dae470/5DDEE4C3/t51.2885-19/s150x150/67398776_842274396156109_7088845119775834112_n.jpg?_nc_ht=instagram.fykz1-1.fna.fbcdn.net',
+          image_url_hd: 'https://instagram.fykz1-1.fna.fbcdn.net/vp/efc47fc681f059072ab23c7d4fc2f84d/5DEA0639/t51.2885-19/67398776_842274396156109_7088845119775834112_n.jpg?_nc_ht=instagram.fykz1-1.fna.fbcdn.net'
         },
         {
           full_name: 'Caleb Unz',
