@@ -1,8 +1,2 @@
 node_modules
 .env
-db
-migrations
-server/routes
-server/services
-server/tests
-server/utils
