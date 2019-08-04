@@ -36,7 +36,7 @@ exports.seed = function (knex, Promise) {
           optionB: 'An Art Studio',
           optionC: 'An Office',
           optionD: 'Anywhere I can get Wifi',
-          gif_url: 'https://giphy.com/embed/dbtDDSvWErdf2'    //
+          gif_url: 'https://giphy.com/embed/vVsIDq0UqnCiA'    //
         },
         {
           context: "What's your texting style?",
