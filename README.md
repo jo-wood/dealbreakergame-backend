@@ -40,7 +40,7 @@ A dating app that gives you connection first, with easy effort on the user to st
 
 ## Primary Dependencies
 
-*This application is built in connection with the client-side server in repo:* [client-side](https://github.com/)
+*This application is built in connection with the client-side server in repo:* [client-side](https://github.com/jo-wood/dealbreakergame-client)
 
 **Note that this application is built using Instagram's API which keeps development in sandbox mode until privacy requirements are approved. In order to run through the game's questions, must trigger the appropriate `preGame()` function on the back-end server.**
 
