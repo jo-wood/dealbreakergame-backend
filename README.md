@@ -7,6 +7,7 @@ A real-time dating app that uses an algorithm to match contestants after answeri
 **Tech Stack:**
 
 * ReactJS
+
 *Backend:*
 * NodeJS (express)
 * Socket.IO
