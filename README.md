@@ -29,19 +29,17 @@ No excuses anymore! We've got your dealbreakers covered.
 
 A dating app that gives you connection first, with easy effort on the user to start a relevant conversation (at the time you actually feel like having a conversation) but still values your potential importance on physical attraction as well
 
--Think, HQ Trivia meets The Dating Game show
--Every night at 8:00, jump onto the dealbreaker game where contestants have also joined
--All contestants waiting to play the game are pooled in images at the bottom of the screen, but... they are blurred out
--In real-time, as the clock strikes 8:00, the current game is LOCKED IN and for 5 mins, questions appear with multiple choice answers
--Submit your answer to the question - and when the timer on that question ends - based on your % match, contestants pictures start to clear
--But we still have some questions to go!
--As you reach the end of the game, your top matches will be fully revealed! And you can start a conversation with plenty to talk about (these questions will guarantee that!)
+* Think, HQ Trivia meets The Dating Game show
+* Every night at 8:00, jump onto the dealbreaker game where contestants have also joined
+* All contestants waiting to play the game are pooled in images at the bottom of the screen, but... they are blurred out
+* In real-time, as the clock strikes 8:00, the current game is LOCKED IN and for 5 mins, questions appear with multiple choice answers
+* Submit your answer to the question - and when the timer on that question ends - based on your % match, contestants pictures start to clear
+* But we still have some questions to go!
+* As you reach the end of the game, your top matches will be fully revealed! And you can start a conversation with plenty to talk about (these questions will guarantee that!)
 
 ## Primary Dependencies
 
-*This application is built in connection with the client-side server in repo:*
-
-[client-side](https://github.com/)
+*This application is built in connection with the client-side server in repo:* [client-side](https://github.com/)
 
 **Note that this application is built using Instagram's API which keeps development in sandbox mode until privacy requirements are approved. In order to run through the game's questions, must trigger the appropriate `preGame()` function on the back-end server.**
 
