@@ -48,7 +48,7 @@ A dating app that gives you connection first, with easy effort on the user to st
 
 *This application is built in connection with the client-side server in repo:* [client-side](https://github.com/jo-wood/dealbreakergame-client)
 
-**Note that this application is built using Instagram's API which keeps development in sandbox mode until privacy requirements are approved. In order to run through the game's questions, must trigger the appropriate `preGame()` function on the back-end server.**
+**Note that this application is built using Instagram's API which keeps development in sandbox mode until privacy requirements are approved. Currently a `Work In Progress` to hardwire a run through case of the project in this repo**
 
 Please [Explore the App](#explore-the-app) for a view on how the game runs.
 
@@ -63,10 +63,12 @@ Please [Explore the App](#explore-the-app) for a view on how the game runs.
 * pg 6.0.2
 * socket.io 2.2.0
 
-To Intall Project
+
+```
+*To Intall Project must have Instagram sandbox authorization and update .env*
 `npm install` to get dependencies
-will require .env with Instagram sandbox authorization
 `npm start` to start the project on local machine.
+```
 
 ## Explore the App
 
